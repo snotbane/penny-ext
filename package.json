@@ -1,0 +1,25 @@
+{
+  "name": "penny-ext",
+  "displayName": "penny-ext",
+  "description": "TBD",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.92.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [{
+      "id": "penny",
+      "aliases": ["Penny", "penny"],
+      "extensions": [".pny"],
+      "configuration": "./language-configuration.json"
+    }],
+    "grammars": [{
+      "language": "penny",
+      "scopeName": "source.pny",
+      "path": "./syntaxes/penny.tmLanguage.json"
+    }]
+  }
+}
