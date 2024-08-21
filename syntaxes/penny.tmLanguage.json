@@ -3,30 +3,132 @@
 	"name": "Penny",
 	"patterns": [
 		{
-			"include": "#keywords"
+			"include": "#keyword"
 		},
 		{
-			"include": "#strings"
-		}
+            "include": "#string"
+		},
+        {
+            "include": "#comment"
+        },
+        {
+            "include": "#lineid"
+        }
 	],
 	"repository": {
-		"keywords": {
-			"patterns": [{
-				"name": "keyword.control.penny",
-				"match": "\\b(if|while|for|return)\\b"
-			}]
-		},
-		"strings": {
-			"name": "string.quoted.double.penny",
-			"begin": "\"",
-			"end": "\"",
+		"keyword": {
 			"patterns": [
-				{
-					"name": "constant.character.escape.penny",
-					"match": "\\\\."
-				}
-			]
-		}
+                {
+                    "name": "keyword.control.penny",
+                    "match": "\\b(if|is|while|for|return|pass|label|jump|call|menu|obj)\\b"
+			    }
+            ]
+		},
+		"string": {
+            "name": "string.quoted",
+            "begin": "\"\"\"|\"|'''|'|```|`",
+            "beginCaptures": {
+              "0": { "name": "punctuation.definition.string.begin" }
+            },
+            "end": "(?<![^\\\\]\\\\)(((?<=\\0)\\0)|\\0)",
+            "endCaptures": {
+              "0": { "name": "punctuation.definition.string.end" }
+            },
+            "patterns": [
+                {
+                    "name": "string.html",
+                    "begin": "(</|<)",
+                    "beginCaptures": {
+                        "0": { "name": "punctuation.definition.tag.begin" }
+                    },
+                    "end": ">",
+                    "endCaptures": {
+                        "0": { "name": "punctuation.definition.tag.end" }
+                    },
+                    "patterns": [
+                        {
+                            "name": "constant.string",
+                            "begin": "\"\"\"|\"|'''|'|```|`",
+                            "beginCaptures": {
+                              "0": { "name": "punctuation.definition.string.begin" }
+                            },
+                            "end": "(?<![^\\\\]\\\\)(((?<=\\0)\\0)|\\0)",
+                            "endCaptures": {
+                              "0": { "name": "punctuation.definition.string.end" }
+                            }
+                        },
+                        {
+                            "name": "keyword.operator",
+                            "match": "[=]"
+                        },
+                        {
+                            "name": "punctuation",
+                            "match": "[,]"
+                        },
+                        {
+                            "name": "constant.numeric",
+                            "match": "[\\d.]"
+                        },
+                        {
+                            "name": "entity.name.tag",
+                            "match": "\\w"
+                        },
+                        {
+                            "name": "hex_literal",
+                            "patterns": [
+                                {
+                                    "comment": "Prevents hexes from being too long",
+                                    "name": "invalid.illegal",
+                                    "match": "(?i)#([\\w]{9,})\\b"
+                                },
+                                {
+                                    "comment": "rgb, rgba, rrggbb, rrggbbaa",
+                                    "match": "(?i)#(?:[a-f0-9]{8}|[a-f0-9]{6}|[a-f0-9]{3,4})\\b",
+                                    "name": "constant.rgb-value"
+                                },
+                                {
+                                    "match": "(?i)#[a-f0-9]+\\b",
+                                    "name": "invalid.illegal"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "source.pny",
+                    "begin": "\\[",
+                    "beginCaptures": {
+                        "0": { "name": "punctuation.definition.injection.begin" }
+                    },
+                    "end": "\\]",
+                    "endCaptures": {
+                        "0": { "name": "punctuation.definition.injection.end"}
+                    }
+                },
+                {
+                    "name": "constant.character.escape",
+                    "match": "\\\\."
+                }
+            ]
+        },
+        "comment": {
+            "name": "comment.line.number-sign",
+            "patterns": [
+                {
+                    "name": "comment.line.number-sign",
+                    "match": "#.*"
+                }
+            ]
+        },
+        "lineid": {
+            "name": "entity.name.function",
+            "patterns": [
+                {
+                    "name": "entity.name.function.penny.label",
+                    "match": "(?<=label\\s*)\\w*[^\\W\\s]"
+                }
+            ]
+        }
 	},
 	"scopeName": "source.pny"
 }
