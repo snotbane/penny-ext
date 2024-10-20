@@ -5,25 +5,203 @@
 		{
 			"include": "#keyword"
 		},
+        {
+			"include": "#rawstring"
+        },
 		{
-            "include": "#string"
+			"include": "#string"
+		},
+		{
+			"include": "#lineid"
 		},
         {
-            "include": "#comment"
+            "include": "#operator"
         },
+		{
+			"include": "#literal"
+		},
+		{
+			"include": "#comment"
+		},
         {
-            "include": "#lineid"
+            "include": "#illegal"
         }
 	],
 	"repository": {
+        "comment": {
+			"name": "comment",
+			"patterns": [
+				{
+					"name": "comment.block",
+					"match": "([#/])\\*(?:.|\\n)*\\*\\1"
+				},
+				{
+					"name": "comment.line",
+					"match": "(?:#|\\/{2})(?:.|\\n)*?$"
+				}
+			]
+        },
 		"keyword": {
 			"patterns": [
+				{
+					"name": "keyword.dec",
+					"match": "\\bdec\\b"
+				},
+				{
+					"name": "keyword.control.flow.call",
+					"match": "\\bcall\\b"
+				},
+				{
+                    "name": "keyword.control.flow.elif",
+					"match": "\\belif\\b"
+				},
+				{
+                    "name": "keyword.control.flow.else",
+					"match": "\\belse\\b"
+				},
                 {
-                    "name": "keyword.control.penny",
-                    "match": "\\b(if|is|while|for|return|pass|label|jump|call|menu|obj)\\b"
-			    }
+                    "name": "keyword.control.flow.exit",
+                    "match": "\\bexit\\b"
+                },
+				{
+					"name": "keyword.control.flow.if",
+					"match": "\\bif\\b"
+				},
+				{
+					"name": "keyword.control.flow.init",
+					"match": "\\binit\\b"
+				},
+				{
+					"name": "keyword.operator.is",
+					"match": "\\bis\\b"
+				},
+				{
+					"name": "keyword.filter",
+					"match": "\\bfilter\\b"
+				},
+				{
+					"name": "keyword.control.flow.jump",
+					"match": "\\bjump\\b"
+				},
+				{
+					"name": "keyword.control.flow.label",
+					"match": "\\blabel\\b"
+				},
+				{
+					"name": "keyword.control.flow.menu",
+					"match": "\\bmenu\\b"
+				},
+				{
+					"name": "keyword.object",
+					"match": "\\bobject\\b"
+				},
+				{
+					"name": "keyword.control.flow.pass",
+					"match": "\\bpass\\b"
+				},
+				{
+					"name": "keyword.print",
+					"match": "\\bprint\\b"
+				},
+				{
+					"name": "keyword.control.flow.return",
+					"match": "\\breturn\\b"
+				},
+				{
+					"name": "keyword.operator.with",
+					"match": "\\bwith\\b"
+				}
             ]
 		},
+        "lineid": {
+            "name": "entity.name",
+            "patterns": [
+                {
+                    "name": "entity.name",
+                    "match": "(?<=(label|jump|call)\\s*)[A-Za-z_]\\w*$"
+                }
+            ]
+        },
+		"literal": {
+			"patterns": [
+				{
+					"name": "constant.null",
+					"match": "\\b([Nn]ull|NULL|[Nn]il|NIL)\\b"
+				},
+				{
+					"name": "constant.boolean",
+					"match": "\\b([Tt]rue|[Ff]alse|TRUE|FALSE)\\b"
+				},
+                {
+                    "name": "constant.lookup",
+                    "match": "\\$[a-zA-Z_]\\w*"
+                },
+				{
+					"name": "variable.name",
+					"match": "[a-zA-Z_]\\w*"
+				},
+				{
+					"name": "constant.numeric",
+					"match": "\\d+\\.\\d*|\\.?\\d+"
+				},
+				{
+					"name": "hex_literal",
+					"patterns": [
+						{
+							"comment": "Prevents hexes from being too long",
+							"name": "invalid.illegal",
+							"match": "(?i)#([\\w]{9,})\\b"
+						},
+						{
+							"comment": "rgb, rgba, rrggbb, rrggbbaa",
+							"match": "(?i)#(?:[a-f0-9]{8}|[a-f0-9]{6}|[a-f0-9]{3,4})\\b",
+							"name": "constant.rgb-value"
+						},
+						{
+							"match": "(?i)#[a-f0-9]+\\b",
+							"name": "invalid.illegal"
+						}
+					]
+				}
+			]
+		},
+		"operator": {
+			"patterns": [
+				{
+					"name": "punctuation.accessor",
+					"match": "\\.\\b"
+				},
+				{
+					"name": "keyword.operator",
+					"match": "([=!<>]=)|&&|\\|\\||(\\b(and|nand|or|nor|not)\\b)|([!+\\-*/%&|<>()](?!=))"
+				},
+				{
+					"name": "keyword.operator.assignment",
+					"match": "[+\\-*/:]?="
+				}
+			]
+		},
+        "rawstring": {
+            "patterns": [
+                {
+                    "name": "string.regexp",
+                    "begin": "(?<=\\breplace\\s+)(\"\"\"|\"|'''|'|```|`)",
+                    "beginCaptures": {
+                      "0": { "name": "punctuation.definition.string.regexp.begin" }
+                    },
+                    "end": "(?<![^\\\\]\\\\)(((?<=\\0)\\0)|\\0)",
+                    "endCaptures": {
+                      "0": { "name": "punctuation.definition.string.regexp.end" }
+                    },
+                    "patterns": [
+                        {
+                            "name": "constant.character.escape",
+                            "match": "\\\\."
+                        }
+                    ]
+                }
+            ]
+        },
 		"string": {
             "name": "string.quoted",
             "begin": "\"\"\"|\"|'''|'|```|`",
@@ -36,12 +214,23 @@
             },
             "patterns": [
                 {
+                    "name": "source.pny",
+                    "begin": "\\{",
+                    "beginCaptures": {
+                        "0": { "name": "punctuation.definition.block.begin"}
+                    },
+                    "end": "\\}",
+                    "endCaptures": {
+                        "0": { "name": "punctuation.definition.block.end"}
+                    }
+                },
+                {
                     "name": "string.html",
-                    "begin": "(</|<)",
+                    "begin": "(</|<)(?=[^=])",
                     "beginCaptures": {
                         "0": { "name": "punctuation.definition.tag.begin" }
                     },
-                    "end": ">",
+                    "end": "(>|/>)",
                     "endCaptures": {
                         "0": { "name": "punctuation.definition.tag.end" }
                     },
@@ -70,8 +259,16 @@
                             "match": "[\\d.]"
                         },
                         {
+                            "name": "source.pny",
+                            "match": "(?<==\\().*(?=\\))"
+                        },
+                        {
+                            "name": "variable.name",
+                            "match": "(?<==\\s*)[A-Za-z_]\\w*\\b"
+                        },
+                        {
                             "name": "entity.name.tag",
-                            "match": "\\w"
+                            "match": "\\b[A-Za-z_]\\w*\\b"
                         },
                         {
                             "name": "hex_literal",
@@ -98,34 +295,24 @@
                     "name": "source.pny",
                     "begin": "\\[",
                     "beginCaptures": {
-                        "0": { "name": "punctuation.definition.injection.begin" }
+                        "0": { "name": "punctuation.definition.evaluation.begin" }
                     },
                     "end": "\\]",
                     "endCaptures": {
-                        "0": { "name": "punctuation.definition.injection.end"}
+                        "0": { "name": "punctuation.definition.evaluation.end"}
                     }
                 },
                 {
                     "name": "constant.character.escape",
                     "match": "\\\\."
-                }
-            ]
-        },
-        "comment": {
-            "name": "comment.line.number-sign",
-            "patterns": [
+                },
                 {
-                    "name": "comment.line.number-sign",
-                    "match": "#.*"
-                }
-            ]
-        },
-        "lineid": {
-            "name": "entity.name.function",
-            "patterns": [
+                    "name": "variable.name",
+                    "match": "@\\.?[A-Za-z_]\\w*(\\.[A-Za-z_]\\w*)*"
+                },
                 {
-                    "name": "entity.name.function.penny.label",
-                    "match": "(?<=label\\s*)\\w*[^\\W\\s]"
+                    "name": "string.abnormal.penny",
+                    "match": "[0-9@_+=|\\[\\]{}<>/\\\\]"
                 }
             ]
         }
