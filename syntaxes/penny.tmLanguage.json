@@ -52,6 +52,10 @@
 					"match": "\\bcall\\b"
 				},
 				{
+					"name": "keyword.operator.close",
+					"match": "\\bclose\\b"
+				},
+				{
                     "name": "keyword.control.flow.elif",
 					"match": "\\belif\\b"
 				},
@@ -59,10 +63,6 @@
                     "name": "keyword.control.flow.else",
 					"match": "\\belse\\b"
 				},
-                {
-                    "name": "keyword.control.flow.exit",
-                    "match": "\\bexit\\b"
-                },
 				{
 					"name": "keyword.control.flow.if",
 					"match": "\\bif\\b"
@@ -72,28 +72,24 @@
 					"match": "\\binit\\b"
 				},
 				{
-					"name": "keyword.operator.is",
-					"match": "\\bis\\b"
-				},
-				{
-					"name": "keyword.filter",
-					"match": "\\bfilter\\b"
-				},
-				{
 					"name": "keyword.control.flow.jump",
 					"match": "\\bjump\\b"
+				},
+				{
+					"name": "keyword.control.flow.match",
+					"match": "\\bmatch\\b"
 				},
 				{
 					"name": "keyword.control.flow.label",
 					"match": "\\blabel\\b"
 				},
 				{
-					"name": "keyword.control.flow.menu",
-					"match": "\\bmenu\\b"
+					"name": "keyword.operator.new",
+					"match": "\\bnew\\b"
 				},
 				{
-					"name": "keyword.object",
-					"match": "\\bobject\\b"
+					"name": "keyword.operator.open",
+					"match": "\\bopen\\b"
 				},
 				{
 					"name": "keyword.control.flow.pass",
@@ -106,10 +102,6 @@
 				{
 					"name": "keyword.control.flow.return",
 					"match": "\\breturn\\b"
-				},
-				{
-					"name": "keyword.operator.with",
-					"match": "\\bwith\\b"
 				}
             ]
 		},
@@ -142,7 +134,7 @@
 				},
 				{
 					"name": "constant.numeric",
-					"match": "\\d+\\.\\d*|\\.?\\d+"
+					"match": "\\b(\\d+\\.\\d*|\\.?\\d+)\\b"
 				},
 				{
 					"name": "hex_literal",
@@ -295,11 +287,11 @@
                     "name": "source.pny",
                     "begin": "\\[",
                     "beginCaptures": {
-                        "0": { "name": "punctuation.definition.evaluation.begin" }
+                        "0": { "name": "punctuation.definition.interpolation.begin" }
                     },
                     "end": "\\]",
                     "endCaptures": {
-                        "0": { "name": "punctuation.definition.evaluation.end"}
+                        "0": { "name": "punctuation.definition.interpolation.end"}
                     }
                 },
                 {
@@ -307,8 +299,12 @@
                     "match": "\\\\."
                 },
                 {
+                    "name": "punctuation.interpolation",
+                    "match": "@"
+                },
+                {
                     "name": "variable.name",
-                    "match": "@\\.?[A-Za-z_]\\w*(\\.[A-Za-z_]\\w*)*"
+                    "match": "(?<=@)\\.?[A-Za-z_]\\w*(\\.[A-Za-z_]\\w*)*"
                 },
                 {
                     "name": "string.abnormal.penny",
