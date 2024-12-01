@@ -44,6 +44,10 @@
 		"keyword": {
 			"patterns": [
 				{
+					"name": "keyword.control.flow.await",
+					"match": "\\bawait\\b"
+				},
+				{
 					"name": "keyword.dec",
 					"match": "\\bdec\\b"
 				},
@@ -78,6 +82,10 @@
 				{
 					"name": "keyword.control.flow.match",
 					"match": "\\bmatch\\b"
+				},
+				{
+					"name": "keyword.control.menu",
+					"match": "\\bmenu\\b"
 				},
 				{
 					"name": "keyword.control.flow.label",
@@ -218,7 +226,7 @@
                 },
                 {
                     "name": "string.html",
-                    "begin": "(</|<)(?=[^=])",
+                    "begin": "(</|<)(?=[^=!])",
                     "beginCaptures": {
                         "0": { "name": "punctuation.definition.tag.begin" }
                     },
@@ -244,7 +252,7 @@
                         },
                         {
                             "name": "punctuation",
-                            "match": "[,]"
+                            "match": "[.,;]"
                         },
                         {
                             "name": "constant.numeric",
