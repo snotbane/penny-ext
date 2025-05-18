@@ -1,7 +1,7 @@
 {
   "name": "penny-ext",
   "displayName": "Penny Language",
-  "description": "Provides syntax highlighting for `.pny` files to build your visual novel, dialogue trees, or what have you.",
+  "description": "Provides syntax highlighting for `.pen` files to build your visual novel, dialogue trees, or what have you.",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.92.0"
@@ -13,12 +13,12 @@
     "languages": [{
       "id": "penny",
       "aliases": ["Penny", "penny"],
-      "extensions": [".pny"],
+      "extensions": [".pen", ".penny"],
       "configuration": "./language-configuration.json"
     }],
     "grammars": [{
       "language": "penny",
-      "scopeName": "source.pny",
+      "scopeName": "source.pen",
       "path": "./syntaxes/penny.tmLanguage.json"
     }]
   }

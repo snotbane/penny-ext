@@ -315,7 +315,7 @@
                     "match": "(?<=@)\\.?[A-Za-z_]\\w*(\\.[A-Za-z_]\\w*)*"
                 },
                 {
-                    "name": "string.abnormal.penny",
+                    "name": "constant.language",
                     "match": "[0-9@_+=|\\[\\]{}<>/\\\\]"
                 }
             ]
