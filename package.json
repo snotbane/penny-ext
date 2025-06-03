@@ -9,17 +9,42 @@
   "categories": [
     "Programming Languages"
   ],
+  "main": "./extension.js",
   "contributes": {
-    "languages": [{
-      "id": "penny",
-      "aliases": ["Penny", "penny"],
-      "extensions": [".pen", ".penny"],
-      "configuration": "./language-configuration.json"
-    }],
-    "grammars": [{
-      "language": "penny",
-      "scopeName": "source.pen",
-      "path": "./syntaxes/penny.tmLanguage.json"
-    }]
+    "commands": [
+      {
+        "command": "extension.showStringWordCount",
+        "title": "Show String Word Count"
+      }
+    ],
+    "languages": [
+      {
+        "id": "penny",
+        "aliases": [
+          "Penny",
+          "penny"
+        ],
+        "extensions": [
+          ".pen",
+          ".penny"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "penny",
+        "scopeName": "source.pen",
+        "path": "./syntaxes/penny.tmLanguage.json"
+      }
+    ]
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.100.0",
+    "typescript": "^5.8.3",
+    "vscode": "^1.1.34"
+  },
+  "scripts": {
+    "compile": "tsc -p ./"
   }
 }

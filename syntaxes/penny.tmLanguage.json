@@ -28,19 +28,6 @@
         }
 	],
 	"repository": {
-        "comment": {
-			"name": "comment",
-			"patterns": [
-				{
-					"name": "comment.block",
-					"match": "([#/])\\*(?:.|\\n)*\\*\\1"
-				},
-				{
-					"name": "comment.line",
-					"match": "(?:#|\\/{2})(?:.|\\n)*?$"
-				}
-			]
-        },
 		"keyword": {
 			"patterns": [
 				{
@@ -48,16 +35,8 @@
 					"match": "\\bawait\\b"
 				},
 				{
-					"name": "keyword.dec",
-					"match": "\\bdec\\b"
-				},
-				{
 					"name": "keyword.control.flow.call",
 					"match": "\\bcall\\b"
-				},
-				{
-					"name": "keyword.operator.close",
-					"match": "\\bclose\\b"
 				},
 				{
                     "name": "keyword.control.flow.elif",
@@ -96,16 +75,8 @@
 					"match": "\\bnew\\b"
 				},
 				{
-					"name": "keyword.operator.open",
-					"match": "\\bopen\\b"
-				},
-				{
 					"name": "keyword.control.flow.pass",
 					"match": "\\bpass\\b"
-				},
-				{
-					"name": "keyword.print",
-					"match": "\\bprint\\b"
 				},
 				{
 					"name": "keyword.control.flow.return",
@@ -113,79 +84,11 @@
 				}
             ]
 		},
-        "lineid": {
-            "name": "entity.name",
-            "patterns": [
-                {
-                    "name": "entity.name",
-                    "match": "(?<=(label|jump|call)\\s*)[A-Za-z_]\\w*$"
-                }
-            ]
-        },
-		"literal": {
-			"patterns": [
-				{
-					"name": "constant.null",
-					"match": "\\b([Nn]ull|NULL|[Nn]il|NIL)\\b"
-				},
-				{
-					"name": "constant.boolean",
-					"match": "\\b([Tt]rue|[Ff]alse|TRUE|FALSE)\\b"
-				},
-                {
-                    "name": "constant.lookup",
-                    "match": "\\$[a-zA-Z_]\\w*"
-                },
-				{
-					"name": "variable.name",
-					"match": "[a-zA-Z_]\\w*"
-				},
-				{
-					"name": "constant.numeric",
-					"match": "\\b(\\d+\\.\\d*|\\.?\\d+)\\b"
-				},
-				{
-					"name": "hex_literal",
-					"patterns": [
-						{
-							"comment": "Prevents hexes from being too long",
-							"name": "invalid.illegal",
-							"match": "(?i)#([\\w]{9,})\\b"
-						},
-						{
-							"comment": "rgb, rgba, rrggbb, rrggbbaa",
-							"match": "(?i)#(?:[a-f0-9]{8}|[a-f0-9]{6}|[a-f0-9]{3,4})\\b",
-							"name": "constant.rgb-value"
-						},
-						{
-							"match": "(?i)#[a-f0-9]+\\b",
-							"name": "invalid.illegal"
-						}
-					]
-				}
-			]
-		},
-		"operator": {
-			"patterns": [
-				{
-					"name": "punctuation.accessor",
-					"match": "\\.\\b"
-				},
-				{
-					"name": "keyword.operator",
-					"match": "([=!<>]=)|&&|\\|\\||(\\b(and|nand|or|nor|not)\\b)|([!+\\-*/%&|<>()](?!=))"
-				},
-				{
-					"name": "keyword.operator.assignment",
-					"match": "[+\\-*/:]?="
-				}
-			]
-		},
         "rawstring": {
             "patterns": [
                 {
-                    "name": "string.regexp",
-                    "begin": "(?<=\\breplace\\s+)(\"\"\"|\"|'''|'|```|`)",
+                    "name": "string.quoted.single",
+                    "begin": "'''|'",
                     "beginCaptures": {
                       "0": { "name": "punctuation.definition.string.regexp.begin" }
                     },
@@ -203,8 +106,8 @@
             ]
         },
 		"string": {
-            "name": "string.quoted",
-            "begin": "\"\"\"|\"|'''|'|```|`",
+            "name": "string.interpolated",
+            "begin": "\"\"\"|\"|```|`",
             "beginCaptures": {
               "0": { "name": "punctuation.definition.string.begin" }
             },
@@ -214,7 +117,7 @@
             },
             "patterns": [
                 {
-                    "name": "source.pny",
+                    "name": "source.pen",
                     "begin": "\\{",
                     "beginCaptures": {
                         "0": { "name": "punctuation.definition.block.begin"}
@@ -259,7 +162,7 @@
                             "match": "[\\d.]"
                         },
                         {
-                            "name": "source.pny",
+                            "name": "source.pen",
                             "match": "(?<==\\().*(?=\\))"
                         },
                         {
@@ -292,7 +195,7 @@
                     ]
                 },
                 {
-                    "name": "source.pny",
+                    "name": "source.pen",
                     "begin": "\\[",
                     "beginCaptures": {
                         "0": { "name": "punctuation.definition.interpolation.begin" }
@@ -319,7 +222,96 @@
                     "match": "[0-9@_+=|\\[\\]{}<>/\\\\]"
                 }
             ]
+        },
+        "lineid": {
+            "name": "entity.name",
+            "patterns": [
+                {
+                    "name": "entity.name",
+                    "match": "(?<=(label|jump|call)\\s*)[A-Za-z_]\\w*$"
+                }
+            ]
+        },
+		"operator": {
+			"patterns": [
+				{
+					"name": "punctuation.accessor",
+					"match": "\\.\\b"
+				},
+                {
+                    "name": "punctuation.iterator",
+                    "match": ","
+                },
+				{
+					"name": "keyword.operator",
+					"match": "([=!<>]=)|&&|\\|\\||(\\b(and|nand|or|nor|not)\\b)|([!+\\-*/%&|<>()](?!=))"
+				},
+				{
+					"name": "keyword.operator.assignment",
+					"match": "[+\\-*/:]?="
+				},
+                {
+                    "name": "entity.name.function",
+                    "match": "[a-zA-Z_]\\w*(?=\\s*\\()"
+                }
+			]
+		},
+		"literal": {
+			"patterns": [
+				{
+					"name": "constant.null",
+					"match": "\\b([Nn]ull|NULL|[Nn]il|NIL)\\b"
+				},
+				{
+					"name": "constant.boolean",
+					"match": "\\b([Tt]rue|[Ff]alse|TRUE|FALSE)\\b"
+				},
+                {
+                    "name": "constant.lookup",
+                    "match": "\\$[a-zA-Z_]\\w*"
+                },
+				{
+					"name": "variable.name",
+					"match": "[a-zA-Z_]\\w*"
+				},
+				{
+					"name": "constant.numeric",
+					"match": "\\b(\\d+\\.\\d*|\\.?\\d+)\\b"
+				},
+				{
+					"name": "hex_literal",
+					"patterns": [
+						{
+							"comment": "Prevents hexes from being too long",
+							"name": "invalid.illegal",
+							"match": "(?i)#([\\w]{9,})\\b"
+						},
+						{
+							"comment": "rgb, rgba, rrggbb, rrggbbaa",
+							"match": "(?i)#(?:[a-f0-9]{8}|[a-f0-9]{6}|[a-f0-9]{3,4})\\b",
+							"name": "constant.rgb-value"
+						},
+						{
+							"match": "(?i)#[a-f0-9]+\\b",
+							"name": "invalid.illegal"
+						}
+					]
+				}
+			]
+		},
+        "comment": {
+			"name": "comment",
+			"patterns": [
+				{
+					"name": "comment.block",
+					"match": "([#/])\\*(?:.|\\n)*\\*\\1"
+				},
+				{
+					"name": "comment.line",
+					"match": "(?:#|\\/{2})(?:.|\\n)*?$"
+				}
+			]
         }
 	},
-	"scopeName": "source.pny"
+	"scopeName": "source.pen"
 }
