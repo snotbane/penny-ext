@@ -79,6 +79,10 @@
 					"match": "\\bpass\\b"
 				},
 				{
+					"name": "keyword.debug.print",
+					"match": "\\bprint\\b"
+				},
+				{
 					"name": "keyword.control.flow.return",
 					"match": "\\breturn\\b"
 				}
@@ -267,11 +271,11 @@
 					"match": "\\b([Tt]rue|[Ff]alse|TRUE|FALSE)\\b"
 				},
                 {
-                    "name": "constant.lookup",
+                    "name": "variable.name.saved",
                     "match": "\\$[a-zA-Z_]\\w*"
                 },
 				{
-					"name": "variable.name",
+					"name": "variable.name.transient",
 					"match": "[a-zA-Z_]\\w*"
 				},
 				{

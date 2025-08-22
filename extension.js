@@ -58,7 +58,7 @@ function activate(context) {
     updateWordCount(); // initial call
 }
 function getMetrics(text) {
-    const stringRegex = /(?<=("""|"|```|`))(?:\\.|(?!\1)[^\\\r\n])*(?=\1)/g; // Matches simple quoted strings
+    const stringRegex = /(?<!#.*)(?<=("""|"|```|`))(?:\\.|(?!\1)[^\\\r\n])*(?=\1)/g; // Matches simple quoted strings
     const tagRegex = /(?<!\\)<([^<>]*?)(?<!\\)>/g;
     const matches = text.match(stringRegex);
     if (!matches)
