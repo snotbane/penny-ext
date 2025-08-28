@@ -2,16 +2,14 @@
   "name": "penny-ext",
   "displayName": "Penny Language",
   "description": "Provides syntax highlighting for `.pen` files to build your visual novel, dialogue trees, or what have you.",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "publisher": "snotbane",
   "engines": {
     "vscode": "^1.100.0"
   },
-
   "categories": [
     "Programming Languages"
   ],
-
   "main": "./extension.js",
   "contributes": {
     "commands": [
@@ -50,7 +48,7 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/snotbane/penny-ext.git"
-    },
+  },
   "scripts": {
     "compile": "tsc -p ./"
   }
