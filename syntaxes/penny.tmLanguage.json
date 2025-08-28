@@ -71,6 +71,10 @@
 					"match": "\\blabel\\b"
 				},
 				{
+					"name": "keyword.control.storage.let",
+					"match": "\\blet\\b"
+				},
+				{
 					"name": "keyword.operator.new",
 					"match": "\\bnew\\b"
 				},
@@ -85,6 +89,10 @@
 				{
 					"name": "keyword.control.flow.return",
 					"match": "\\breturn\\b"
+				},
+				{
+					"name": "keyword.control.storage.var",
+					"match": "\\bvar\\b"
 				}
             ]
 		},
