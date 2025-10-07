@@ -99,8 +99,8 @@
         "rawstring": {
             "patterns": [
                 {
-                    "name": "string.quoted.single",
-                    "begin": "'''|'",
+                    "name": "string.quoted",
+                    "begin": "```|`|\"\"\"|\"|'''|'",
                     "beginCaptures": {
                       "0": { "name": "punctuation.definition.string.regexp.begin" }
                     },
@@ -119,11 +119,11 @@
         },
 		"string": {
             "name": "string.interpolated",
-            "begin": "\"\"\"|\"|```|`",
+            "begin": "[>\\+](?!=)[\t ]*",
             "beginCaptures": {
               "0": { "name": "punctuation.definition.string.begin" }
             },
-            "end": "(?<![^\\\\]\\\\)(((?<=\\0)\\0)|\\0)",
+            "end": "$|\n",
             "endCaptures": {
               "0": { "name": "punctuation.definition.string.end" }
             },
@@ -260,7 +260,7 @@
 				},
 				{
 					"name": "keyword.operator.assignment",
-					"match": "[+\\-*/:]?="
+					"match": "===|[+\\-*/:]?="
 				},
                 {
                     "name": "entity.name.function",
@@ -279,11 +279,11 @@
 					"match": "\\b([Tt]rue|[Ff]alse|TRUE|FALSE)\\b"
 				},
                 {
-                    "name": "variable.name.saved",
-                    "match": "\\$[a-zA-Z_]\\w*"
+                    "name": "variable.root",
+                    "match": "~"
                 },
 				{
-					"name": "variable.name.transient",
+					"name": "variable.name",
 					"match": "[a-zA-Z_]\\w*"
 				},
 				{
