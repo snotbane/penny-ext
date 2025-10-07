@@ -2,7 +2,7 @@
   "name": "penny-ext",
   "displayName": "Penny Language",
   "description": "Provides syntax highlighting for `.pen` files to build your visual novel, dialogue trees, or what have you.",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "publisher": "snotbane",
   "engines": {
     "vscode": "^1.100.0"
