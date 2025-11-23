@@ -36,9 +36,76 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.activate = activate;
 exports.deactivate = deactivate;
 const vscode = __importStar(require("vscode"));
+// interface Metrics {
+// 	wordCount: number,
+// 	charCount: number,
+// 	letterCount: number,
+// }
+function approxString(x) {
+    const delimitK = x / 1000.0;
+    if (delimitK > 1.0) {
+        return String(Math.floor(x / 100.0) / 10.0) + "K";
+    }
+    else {
+        return String(x);
+    }
+}
+class Metrics {
+    constructor() {
+        this.blockCount = 0;
+        this.wordCount = 0;
+        this.charCount = 0;
+        this.letterCount = 0;
+        this.blockCountIncludingComments = 0;
+        this.wordCountIncludingComments = 0;
+        this.charCountIncludingComments = 0;
+        this.letterCountIncludingComments = 0;
+        this.linesProcessed = 0;
+    }
+    get messageShort() {
+        return `${this.wordCountApproxString} words`;
+    }
+    get messageLong() {
+        return ``
+            .concat(`${this.blockCount} blocks\n`)
+            .concat(`${this.wordCount} words\n`)
+            .concat(`${this.charCount} chars\n`)
+            .concat(`${this.letterCount} letters\n`)
+            .concat(`${this.lettersPerWord} lpw\n`)
+            .concat(`\n`)
+            .concat(`Including comments:\n`)
+            .concat(`${this.blockCountIncludingComments} blocks\n`)
+            .concat(`${this.wordCountIncludingComments} words\n`)
+            .concat(`${this.charCountIncludingComments} chars\n`)
+            .concat(`${this.letterCountIncludingComments} letters\n`)
+            .concat(`${this.lettersPerWordIncludingComments} lpw\n`);
+    }
+    get lettersPerWord() {
+        if (this.wordCount == 0)
+            return 0;
+        return Math.floor(100 * this.letterCount / this.wordCount) / 100;
+    }
+    get lettersPerWordIncludingComments() {
+        if (this.wordCountIncludingComments == 0)
+            return 0;
+        return Math.floor(100 * this.letterCountIncludingComments / this.wordCountIncludingComments) / 100;
+    }
+    get wordCountApproxString() {
+        return approxString(this.wordCount);
+    }
+    append(other) {
+        this.blockCount += other.blockCount;
+        this.wordCount += other.wordCount;
+        this.charCount += other.charCount;
+        this.letterCount += other.letterCount;
+        this.blockCountIncludingComments += other.blockCountIncludingComments;
+        this.wordCountIncludingComments += other.wordCountIncludingComments;
+        this.charCountIncludingComments += other.charCountIncludingComments;
+        this.letterCountIncludingComments += other.letterCountIncludingComments;
+    }
+}
 function activate(context) {
     const statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100);
-    statusBarItem.tooltip = "Penny word count is calculated from any strings using double quotes or backticks.\nDoesn't include single quotes.";
     context.subscriptions.push(statusBarItem);
     const updateWordCount = () => {
         const editor = vscode.window.activeTextEditor;
@@ -48,8 +115,8 @@ function activate(context) {
         }
         const text = editor.document.getText();
         const metrics = getMetrics(text);
-        statusBarItem.text = `${metrics.wordCount} words`;
-        statusBarItem.tooltip = `${metrics.wordCount} words\n${metrics.charCount} chars\n${metrics.letterCount} letters\n${Math.floor(100 * metrics.letterCount / metrics.wordCount) / 100} lpw\nMetrics are approximate.`;
+        statusBarItem.text = metrics.messageShort;
+        statusBarItem.tooltip = metrics.messageLong;
         statusBarItem.show();
     };
     vscode.window.onDidChangeActiveTextEditor(updateWordCount, null, context.subscriptions);
@@ -58,29 +125,34 @@ function activate(context) {
     updateWordCount(); // initial call
 }
 function getMetrics(text) {
-    const stringRegex = /(?<!#.*)(?<=("""|"|```|`))(?:\\.|(?!\1)[^\\\r\n])*(?=\1)/g; // Matches simple quoted strings
-    const tagRegex = /(?<!\\)<([^<>]*?)(?<!\\)>/g;
-    const matches = text.match(stringRegex);
-    if (!matches)
-        return {
-            wordCount: 0,
-            charCount: 0,
-            letterCount: 0,
-        };
-    let wordCount = 0;
-    let charCount = 0;
-    let letterCount = 0;
-    for (const str of matches) {
-        const content = str.replace(tagRegex, "");
-        const words = content.split(/\s+/).filter(Boolean);
-        wordCount += words.length;
-        charCount += content.length;
-        words.forEach(word => letterCount += word.replace(/[^A-Za-z0-9]/g, '').length);
+    const result = new Metrics();
+    const lines = text.split('\n');
+    for (const line of lines) {
+        result.append(getMetricsForLine(line));
     }
-    return {
-        wordCount: wordCount,
-        charCount: charCount,
-        letterCount: letterCount,
-    };
+    return result;
+}
+function getMetricsForLine(line) {
+    const result = new Metrics();
+    const STRING_REGEX = /(.*#.*)?[>\+](?!=)[\t ]*(.*)/g;
+    const matches = STRING_REGEX.exec(line);
+    if (matches == null)
+        return result;
+    const isComment = matches[1] != null;
+    const str = matches[2];
+    const TAG_REGEX = /(?<!\\)<([^<>]*?)(?<!\\)>/g;
+    const content = str.replace(TAG_REGEX, "");
+    const words = content.split(/\s+/g).filter(Boolean);
+    if (!isComment) {
+        result.blockCount += 1;
+        result.wordCount += words.length;
+        result.charCount += content.length;
+        words.forEach(word => result.letterCount += word.replace(/[^A-Za-z0-9]/g, '').length);
+    }
+    result.blockCountIncludingComments += 1;
+    result.wordCountIncludingComments += words.length;
+    result.charCountIncludingComments += content.length;
+    words.forEach(word => result.letterCountIncludingComments += word.replace(/[^A-Za-z0-9]/g, '').length);
+    return result;
 }
 function deactivate() { }
