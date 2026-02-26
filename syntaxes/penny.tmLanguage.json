@@ -9,7 +9,7 @@
 			"include": "#rawstring"
         },
 		{
-			"include": "#string"
+			"include": "#message"
 		},
 		{
 			"include": "#lineid"
@@ -117,27 +117,35 @@
                 }
             ]
         },
-		"string": {
-            "name": "string.interpolated",
-            "begin": "[>\\+](?!=)[\t ]*",
+		"message": {
+            "name": "string.dialog",
+            "begin": "^(\\s*)(.*?)([>+])(?!=)",
             "beginCaptures": {
-              "0": { "name": "punctuation.definition.string.begin" }
+                "1": { "patterns": [{ "include": "$self" }] },
+                "2": { "patterns": [{ "include": "$self" }] },
+                "3": { "name": "punctuation.definition.string.begin" }
             },
-            "end": "$|\n",
+            "end": "^(?!\\1\\s);?",
             "endCaptures": {
-              "0": { "name": "punctuation.definition.string.end" }
+                "0": { "name": "punctuation.definition.string.end" }
             },
             "patterns": [
                 {
                     "name": "source.pen",
-                    "begin": "\\{",
+                    "begin": "(?<!\\\\)\\[\\s*",
                     "beginCaptures": {
-                        "0": { "name": "punctuation.definition.block.begin"}
+                        "0": { "name": "punctuation.definition.translation.begin"}
                     },
-                    "end": "\\}",
+                    "end": "(?<!\\\\)\\]",
                     "endCaptures": {
-                        "0": { "name": "punctuation.definition.block.end"}
-                    }
+                        "0": { "name": "punctuation.definition.translation.end"}
+                    },
+                    "patterns": [
+                        {
+                            "name": "constant.language",
+                            "match": ".*?(?=\\])"
+                        }
+                    ]
                 },
                 {
                     "name": "string.html",
@@ -154,11 +162,11 @@
                             "name": "constant.string",
                             "begin": "\"\"\"|\"|'''|'|```|`",
                             "beginCaptures": {
-                              "0": { "name": "punctuation.definition.string.begin" }
+                            "0": { "name": "punctuation.definition.string.begin" }
                             },
                             "end": "(?<![^\\\\]\\\\)(((?<=\\0)\\0)|\\0)",
                             "endCaptures": {
-                              "0": { "name": "punctuation.definition.string.end" }
+                            "0": { "name": "punctuation.definition.string.end" }
                             }
                         },
                         {
@@ -208,11 +216,11 @@
                 },
                 {
                     "name": "source.pen",
-                    "begin": "\\[",
+                    "begin": "(?<!\\\\)\\{",
                     "beginCaptures": {
                         "0": { "name": "punctuation.definition.interpolation.begin" }
                     },
-                    "end": "\\]",
+                    "end": "(?<!\\\\)\\}",
                     "endCaptures": {
                         "0": { "name": "punctuation.definition.interpolation.end"}
                     }
