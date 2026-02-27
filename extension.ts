@@ -18,7 +18,6 @@ class Metrics {
     wordCountIncludingComments: number = 0;
     charCountIncludingComments: number = 0;
     letterCountIncludingComments: number = 0;
-    linesProcessed: number = 0;
 
     get messageShort(): string {
         return `${this.wordCountApproxString} words`
